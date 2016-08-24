@@ -1,0 +1,16 @@
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.Properties.Resources.resources
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.csproj.GenerateResource.Cache
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.ErrorMsg.resources
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.frmMain.resources
+D:\Projects\SqlWork\SqlWork\bin\Debug\SqlWork.exe.config
+D:\Projects\SqlWork\SqlWork\bin\Debug\SqlWork.exe
+D:\Projects\SqlWork\SqlWork\bin\Debug\SqlWork.pdb
+D:\Projects\SqlWork\SqlWork\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+D:\Projects\SqlWork\SqlWork\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+D:\Projects\SqlWork\SqlWork\bin\Debug\Microsoft.SqlServer.Smo.dll
+D:\Projects\SqlWork\SqlWork\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+D:\Projects\SqlWork\SqlWork\bin\Debug\Microsoft.SqlServer.Dmf.dll
+D:\Projects\SqlWork\SqlWork\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.exe
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.pdb
+D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.csprojResolveAssemblyReference.cache

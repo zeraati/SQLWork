@@ -1,0 +1,16 @@
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\bin\Debug\Arzyabi-950331.exe.config
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\bin\Debug\Arzyabi-950331.exe
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\bin\Debug\Arzyabi-950331.pdb
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi_950331.Form1.resources
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi_950331.Properties.Resources.resources
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi-950331.csproj.GenerateResource.Cache
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi-950331.exe
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi-950331.pdb
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi_950331.Querys.resources
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi_950331.ErrorMsg.resources
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi-950331.csprojResolveAssemblyReference.cache
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\bin\Debug\Persia.dll
+D:\Projects\Arzyabi\Arzyabi-950331\Arzyabi-950331\bin\Debug\PersiaSL.dll
+Z:\DataBase\Arzyabi-950331\Arzyabi-950331\bin\Debug\Arzyabi-950331.exe.config
+Z:\DataBase\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi-950331.exe
+Z:\DataBase\Arzyabi-950331\Arzyabi-950331\obj\Debug\Arzyabi-950331.pdb

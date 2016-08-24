@@ -1,0 +1,76 @@
+Z:\DataBase\QuerysS\Querys\bin\Debug\Arzyabi-950331.exe.config
+Z:\DataBase\QuerysS\Querys\bin\Debug\Arzyabi-950331.exe
+Z:\DataBase\QuerysS\Querys\bin\Debug\Arzyabi-950331.pdb
+Z:\DataBase\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+Z:\DataBase\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+Z:\DataBase\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.Smo.dll
+Z:\DataBase\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+Z:\DataBase\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.Dmf.dll
+Z:\DataBase\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+Z:\DataBase\QuerysS\Querys\obj\Debug\Arzyabi_950331.Properties.Resources.resources
+Z:\DataBase\QuerysS\Querys\obj\Debug\Querys.csproj.GenerateResource.Cache
+Z:\DataBase\QuerysS\Querys\obj\Debug\Arzyabi-950331.exe
+Z:\DataBase\QuerysS\Querys\obj\Debug\Arzyabi-950331.pdb
+Z:\DataBase\QuerysS\Querys\obj\Debug\Querys.ErrorMsg.resources
+Z:\DataBase\QuerysS\Querys\obj\Debug\Querys.frmMain.resources
+Z:\DataBase\QuerysS\Querys\obj\Debug\Querys.frmQuerys.resources
+D:\Projects\QuerysS\Querys\bin\Debug\Arzyabi-950331.exe.config
+D:\Projects\QuerysS\Querys\obj\Debug\Arzyabi-950331.exe
+D:\Projects\QuerysS\Querys\obj\Debug\Arzyabi-950331.pdb
+D:\Projects\QuerysS\Querys\obj\Debug\Querys.csprojResolveAssemblyReference.cache
+D:\Projects\QuerysS\Querys\obj\Debug\Querys.ErrorMsg.resources
+D:\Projects\QuerysS\Querys\obj\Debug\Querys.frmMain.resources
+D:\Projects\QuerysS\Querys\obj\Debug\Arzyabi_950331.Properties.Resources.resources
+D:\Projects\QuerysS\Querys\obj\Debug\Querys.frmQuerys.resources
+D:\Projects\QuerysS\Querys\obj\Debug\Querys.csproj.GenerateResource.Cache
+D:\Projects\QuerysS\Querys\bin\Debug\Arzyabi-950331.exe
+D:\Projects\QuerysS\Querys\bin\Debug\Arzyabi-950331.pdb
+D:\Projects\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+D:\Projects\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+D:\Projects\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.Smo.dll
+D:\Projects\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+D:\Projects\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.Dmf.dll
+D:\Projects\QuerysS\Querys\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+D:\Projects\Querys Software\Querys2\Querys\bin\Debug\Arzyabi-950331.exe.config
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Arzyabi-950331.exe
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Arzyabi-950331.pdb
+D:\Projects\Querys Software\Querys2\Querys\bin\Debug\Arzyabi-950331.exe
+D:\Projects\Querys Software\Querys2\Querys\bin\Debug\Arzyabi-950331.pdb
+D:\Projects\Querys Software\Querys2\Querys\bin\Debug\Persia.dll
+D:\Projects\Querys Software\Querys2\Querys\bin\Debug\PersiaSL.dll
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Querys.csprojResolveAssemblyReference.cache
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Querys.ErrorMsg.resources
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Querys.frmMain.resources
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Arzyabi_950331.Properties.Resources.resources
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Querys.frmQuerys.resources
+D:\Projects\Querys Software\Querys2\Querys\obj\Debug\Querys.csproj.GenerateResource.Cache
+D:\Projects\Querys2\Querys\bin\Debug\Arzyabi-950331.exe.config
+D:\Projects\Querys2\Querys\obj\Debug\Arzyabi-950331.exe
+D:\Projects\Querys2\Querys\obj\Debug\Arzyabi-950331.pdb
+D:\Projects\Querys2\Querys\bin\Debug\Arzyabi-950331.exe
+D:\Projects\Querys2\Querys\bin\Debug\Arzyabi-950331.pdb
+D:\Projects\Querys2\Querys\bin\Debug\Microsoft.SqlServer.ConnectionInfo.dll
+D:\Projects\Querys2\Querys\bin\Debug\Microsoft.SqlServer.Management.Sdk.Sfc.dll
+D:\Projects\Querys2\Querys\bin\Debug\Microsoft.SqlServer.Smo.dll
+D:\Projects\Querys2\Querys\bin\Debug\Microsoft.SqlServer.SqlEnum.dll
+D:\Projects\Querys2\Querys\bin\Debug\Microsoft.SqlServer.Dmf.dll
+D:\Projects\Querys2\Querys\bin\Debug\Microsoft.SqlServer.ServiceBrokerEnum.dll
+D:\Projects\Querys2\Querys\obj\Debug\Querys.ErrorMsg.resources
+D:\Projects\Querys2\Querys\obj\Debug\Querys.frmMain.resources
+D:\Projects\Querys2\Querys\obj\Debug\Arzyabi_950331.Properties.Resources.resources
+D:\Projects\Querys2\Querys\obj\Debug\Querys.frmQuerys.resources
+D:\Projects\Querys2\Querys\obj\Debug\Querys.csproj.GenerateResource.Cache
+D:\Projects\Querys2\Querys\obj\Debug\Querys.csprojResolveAssemblyReference.cache
+D:\Projects\Querys Software\Querys2-1\Querys\bin\Debug\Arzyabi-950331.exe.config
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Arzyabi-950331.exe
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Arzyabi-950331.pdb
+D:\Projects\Querys Software\Querys2-1\Querys\bin\Debug\Arzyabi-950331.exe
+D:\Projects\Querys Software\Querys2-1\Querys\bin\Debug\Arzyabi-950331.pdb
+D:\Projects\Querys Software\Querys2-1\Querys\bin\Debug\Persia.dll
+D:\Projects\Querys Software\Querys2-1\Querys\bin\Debug\PersiaSL.dll
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Querys.csprojResolveAssemblyReference.cache
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Querys.ErrorMsg.resources
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Querys.frmMain.resources
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Arzyabi_950331.Properties.Resources.resources
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Querys.frmQuerys.resources
+D:\Projects\Querys Software\Querys2-1\Querys\obj\Debug\Querys.csproj.GenerateResource.Cache
