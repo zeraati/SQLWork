@@ -7,8 +7,8 @@
     <ProjectGuid>{C49AB703-AD1C-4A0E-97C5-19B959B16573}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SqlWork</RootNamespace>
-    <AssemblyName>SqlWork</AssemblyName>
+    <RootNamespace>SQLWork</RootNamespace>
+    <AssemblyName>SQLWork</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
