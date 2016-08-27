@@ -573,7 +573,7 @@ namespace SqlWork
                 CopyQuery = strQuery;
             }
 
-            
+
 
             return strResult;
         }
@@ -595,7 +595,7 @@ namespace SqlWork
                 CopyQuery = strQuery;
             }
 
-           
+
             return strResult;
         }
 
@@ -635,30 +635,6 @@ namespace SqlWork
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            SqlConnection sqlConnection_118 = func.SqlConnect("172.20.1.18", "AmarRahmani", "Gxvcx1f3ddf8.0ak_3gse", "BookYear");
-            SqlConnection sqlConnection_1853 = func.SqlConnect("172.20.18.53", "sa", "L4Fq3L*jh&QaYMUF", "_Import-Export");
-
-
-
-            SqlConnection csDest = sqlConnection_1853;
-
-            SqlConnection connSource = sqlConnection_118;
-            SqlCommand cmd = connSource.CreateCommand();
-
-            SqlBulkCopy bcp = new SqlBulkCopy(csDest);
-            {
-                bcp.DestinationTableName = "SomeTable";
-                cmd.CommandText = "myproc";
-                cmd.CommandType = CommandType.StoredProcedure;
-                connSource.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    bcp.WriteToServer(reader);
-                }
-            }
-
-
         }
     }
 

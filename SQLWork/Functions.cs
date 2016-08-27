@@ -693,7 +693,7 @@ namespace SqlWork
                 cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
 
-                return "SqlExcutCommand => "+strState + " => Done";
+                return "SqlExcutCommand => " + strState + " => Done";
             }
 
             catch (Exception) { return "SqlExcutCommand => " + strState + " => Error"; }
@@ -758,12 +758,6 @@ namespace SqlWork
         /// بر روی سیستم SQL لیستی شامل تمام پایگاه  داده های
         /// </summary>
         /// <returns>DataTable</returns>
-        public DataTable SqlGetDBName(string server, string dbname = "master")
-        {
-            string qry = "SELECT name FROM sys.databases WHERE database_id>0 order by name";
-            DataTable dt = SqlDataAdapter(qry, server, dbname);
-            return dt;
-        }
 
         public DataTable SqlGetDBName(SqlConnection sqlConnection)
         {
@@ -777,34 +771,19 @@ namespace SqlWork
 
         #region SqlDataAdapter
 
-        public DataTable SqlDataAdapter(string query, string server, string DBName = "master", string stat = "SqlDataAdapter")
+        public DataTable SqlDataAdapter(SqlConnection sqlConnection, string strQuery, string stat = "SqlDataAdapter", string strTable = "", string strColumn = "")
         {
             DataTable dt = new DataTable();
 
-            try
-            {
-                SqlDataAdapter da = new SqlDataAdapter(query, SqlConnect(server));
-                da.Fill(dt);
-                return dt;
-            }
-            catch (Exception e)
-            {
-                if (stat != "SqlDataAdapter")
-                    MessageBox.Show(stat + Environment.NewLine + e.Message, "خطا");
-                return dt;
-            }
-        }
+            //  defult queries
+            if (strQuery == "DISTINCT" && strTable != "")
+            { strQuery = "SELECT DISTINCT [" + strColumn + "] FROM [" + strTable + "] ORDER BY [" + strColumn + "]"; }
 
-        public DataTable SqlDataAdapter(SqlConnection sqlConnection, string strQuery, string stat = "SqlDataAdapter", string strTable = "")
-        {
-            DataTable dt = new DataTable();
+            else if (strQuery == "SELECT" && strTable != "")
+            { strQuery = "SELECT * FROM [" + strTable + "]"; }
 
             try
             {
-                //  select table qury if query empty
-                if (strQuery == "" && strTable != "")
-                { strQuery = "SELECT TOP 100 * FROM [" + strTable + "]"; }
-
                 SqlDataAdapter da = new SqlDataAdapter(strQuery, sqlConnection);
                 da.Fill(dt);
                 return dt;
@@ -842,7 +821,7 @@ namespace SqlWork
         /// <returns>List > string</returns>
         public List<string> SqlColumns(SqlConnection sqlConnection, string strTableName)
         {
-            string Query = "SELECT COLUMN_NAME as 'نام فیلد' FROM INFORMATION_SCHEMA.COLUMNS " + "WHERE TABLE_NAME = N'" + strTableName + "'";
+            string Query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS " + "WHERE TABLE_NAME = N'" + strTableName + "'";
             return DataTableToList(SqlDataAdapter(sqlConnection, Query));
         }
 
@@ -880,7 +859,7 @@ namespace SqlWork
 
 
         #region SqlCheckUniqColumn
-        public string SqlCheckUniqColumn(SqlConnection sqlConnection, string strTable, string strColumn,out string Query)
+        public string SqlCheckUniqColumn(SqlConnection sqlConnection, string strTable, string strColumn, out string Query)
         {
             // create query
             string strQry = "SELECT [" + strColumn + "],COUNT(*)cnt FROM [" + strTable + "] GROUP BY [" + strColumn + "] HAVING COUNT(*) > 1 AND [" + strColumn + "] IS NOT NULL";
@@ -988,10 +967,10 @@ namespace SqlWork
 
 
         #region SqlDropColumn
-        public string SqlDropColumn(SqlConnection sqlConnection, string strTable, string strColumn,out string Query)
+        public string SqlDropColumn(SqlConnection sqlConnection, string strTable, string strColumn, out string Query)
         {
             string strQuery = Query = "ALTER TABLE [" + strTable + "] DROP COLUMN [" + strColumn + "]";
-            
+
             return SqlExcutCommand(sqlConnection, strQuery, strColumn + " ==> DropColumn");
         }
         #endregion
@@ -1026,7 +1005,7 @@ namespace SqlWork
 
 
         #region SqlRename
-        public string SqlRename(SqlConnection sqlConnection, string strType, string strOldName, string strNewName, string strTable, out string strQuery,string strState="")
+        public string SqlRename(SqlConnection sqlConnection, string strType, string strOldName, string strNewName, string strTable, out string strQuery, string strState = "")
         {
             strQuery = "";
 
@@ -1038,8 +1017,36 @@ namespace SqlWork
             if (strType.ToUpper() == "COLUMN" && strTable != "")
             { strQuery = "EXEC sp_rename '" + strTable + "." + strOldName + "', '" + strNewName + "' , 'COLUMN'"; }
 
-            return SqlExcutCommand(sqlConnection, strQuery, strState+ " => SqlRename");
+            return SqlExcutCommand(sqlConnection, strQuery, strState + " => SqlRename");
         }
+        #endregion
+
+
+        #region SqlPivote
+
+        public DataTable SqlPivote(SqlConnection sqlConnection, string strTable, string strValues, string strRows, string strColumns)
+        {
+            DataTable dt = SqlDataAdapter(sqlConnection, "DISTINCT", "", strTable, strColumns);
+
+            string s = "";
+            int intDtRowsCount = dt.Rows.Count;
+
+            for (int i = 0; i < intDtRowsCount; i++)
+            {
+                if (i < intDtRowsCount - 1)
+                    s = s + "[" + dt.Rows[i][0].ToString() + "],";
+
+                if (i == intDtRowsCount - 1)
+                    s = s + "[" + dt.Rows[i][0].ToString() + "]";
+            }
+
+
+            string strQuery = "SELECT * FROM (SELECT [" + strValues + "],[" + strRows + "],[" + strColumns + "] FROM [" + strTable + "])a"
+                            + " PIVOT(COUNT([" + strValues + "]) FOR [" + strColumns + "] IN(" + s + "))b";
+
+            return SqlDataAdapter(sqlConnection, strQuery);
+        }
+
         #endregion
     }
 }
