@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace SQLWork
 {
-    public partial class frmExportData : Form
+    public partial class frmExport : Form
     {
         string strPathLoginFolder = @"..\Login.pos";
 
@@ -20,7 +20,7 @@ namespace SQLWork
         SqlConnection sqlConMain = new SqlConnection();
         SqlConnection sqlConSecond = new SqlConnection();
 
-        public frmExportData()
+        public frmExport()
         {
             InitializeComponent();
         }
@@ -31,8 +31,8 @@ namespace SQLWork
         private void ExportData_Load(object sender, EventArgs e)
         {
             //  load server name of login folder
-            cmbServerMain.DataSource = functions.ListServerName(strPathLoginFolder);
-            cmbServerSecond.DataSource = functions.ListServerName(strPathLoginFolder);
+            cmbServerMabda.DataSource = functions.ListServerName(strPathLoginFolder);
+            cmbServerMaghsad.DataSource = functions.ListServerName(strPathLoginFolder);
         }
 
         #endregion
@@ -41,7 +41,7 @@ namespace SQLWork
         private void cmbServerMain_SelectedIndexChanged(object sender, EventArgs e)
         {
             //  server main
-            string strServerMain = cmbServerMain.Text;
+            string strServerMain = cmbServerMabda.Text;
 
             // server info ==> server , user , pass
             List<string> lstServerInfo = new List<string>();
@@ -56,7 +56,7 @@ namespace SQLWork
         private void cmbServerSecond_SelectedIndexChanged(object sender, EventArgs e)
         {
             //  server second
-            string strServerSecond = cmbServerSecond.Text;
+            string strServerSecond = cmbServerMaghsad.Text;
 
             // server info ==> server , user , pass
             List<string> lstServerInfo = new List<string>();
@@ -70,11 +70,11 @@ namespace SQLWork
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (cmbServerMain.Text != cmbServerSecond.Text)
+            if (cmbServerMabda.Text != cmbServerMaghsad.Text)
             {
                 // get server info ==> servermain & serversecond , user , pass
-                string strServerMain = cmbServerMain.Text, strUserMain = txtUserMain.Text, strPassMain = txtPassMain.Text;
-                string strServerSecond = cmbServerSecond.Text, strUserSecond = txtUserSecond.Text, strPassSecond = txtPassSecond.Text;
+                string strServerMain = cmbServerMabda.Text, strUserMain = txtUserMain.Text, strPassMain = txtPassMain.Text;
+                string strServerSecond = cmbServerMaghsad.Text, strUserSecond = txtUserSecond.Text, strPassSecond = txtPassSecond.Text;
 
                 //  create sql connection
                 sqlConMain = functions.SqlConnect(strServerMain, strUserMain, strPassMain);
@@ -85,11 +85,11 @@ namespace SQLWork
                 if (functions.TestConn(sqlConMain))
                 {
                     //  load database name  // set source cmbDBNames 
-                    functions.ComboBoxSource(cmbDBMain, functions.SqlGetDBName(sqlConMain));
+                    functions.ComboBoxSource(cmbDBMabda, functions.SqlGetDBName(sqlConMain));
                     if (functions.TestConn(sqlConSecond))
                     {
                         //  load database name  // set source cmbDBNames 
-                        functions.ComboBoxSource(cmbDBSecond, functions.SqlGetDBName(sqlConSecond));
+                        functions.ComboBoxSource(cmbDBMaghsad, functions.SqlGetDBName(sqlConSecond));
 
                         // set btnConnect text
                         btnConnect.Text = "اتصال مجدد";
@@ -106,41 +106,41 @@ namespace SQLWork
 
         private void cmbDBMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbDBMain.Text != "System.Data.DataRowView")
+            if (cmbDBMabda.Text != "System.Data.DataRowView")
             {
                 //  change db
-                sqlConMain = functions.SqlConnectionChangeDB(sqlConMain, cmbDBMain.Text);
+                sqlConMain = functions.SqlConnectionChangeDB(sqlConMain, cmbDBMabda.Text);
 
                 //set tale name source
-                lstBxTableMain.DataSource = functions.SqlTableName(sqlConMain);
+                lstBxTableMabda.DataSource = functions.SqlTableName(sqlConMain);
             }
         }
 
         private void cmbDBSecond_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbDBSecond.Text != "System.Data.DataRowView")
+            if (cmbDBMaghsad.Text != "System.Data.DataRowView")
             {
                 //  change db
-                sqlConSecond = functions.SqlConnectionChangeDB(sqlConSecond, cmbDBSecond.Text);
+                sqlConSecond = functions.SqlConnectionChangeDB(sqlConSecond, cmbDBMaghsad.Text);
 
                 //set tale name source
-                lstBxTableSecond.DataSource = functions.SqlTableName(sqlConSecond);
+                lstBxTableMaghsad.DataSource = functions.SqlTableName(sqlConSecond);
             }
         }
 
         private void lstBxTableMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TableSelectedIndexChanged(sqlConMain, lstBxTableMain, lstBxColumnMain);
+            TableSelectedIndexChanged(sqlConMain, lstBxTableMabda, lstBxColumnMabda);
         }
 
         private void lstBxTableSecond_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TableSelectedIndexChanged(sqlConSecond, lstBxTableSecond, lstBxColumnSecond);
+            TableSelectedIndexChanged(sqlConSecond, lstBxTableMaghsad, lstBxColumnSecond);
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            List<string> lstSelectedTableNameMain = functions.GetSelectedItemsText(lstBxTableMain);
+            List<string> lstSelectedTableNameMain = functions.GetSelectedItemsText(lstBxTableMabda);
             DataTable Table = new DataTable();
 
             dgvTableInfo.DataSource = functions.SqlTableInfo(lstSelectedTableNameMain[0], sqlConMain);            
@@ -148,7 +148,7 @@ namespace SQLWork
             SqlBulkCopyColumnMapping SCM = new SqlBulkCopyColumnMapping("a", "d");
             SqlBulkCopy SBC = new SqlBulkCopy(sqlConSecond);
 
-            SBC.DestinationTableName = lstBxTableSecond.Items[0].ToString();
+            SBC.DestinationTableName = lstBxTableMaghsad.Items[0].ToString();
             DataTable dt = functions.SqlDataAdapter(sqlConMain, "SELECT", "", lstSelectedTableNameMain[0]);
 
             sqlConMain.Open();

@@ -144,7 +144,7 @@ namespace SqlWork
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            frmExportData frmExportData = new frmExportData();
+            frmExport frmExportData = new frmExport();
             frmExportData.ShowDialog();
         }
 

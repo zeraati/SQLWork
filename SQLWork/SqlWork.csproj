@@ -63,11 +63,11 @@
     <Compile Include="ErrorMsg.Designer.cs">
       <DependentUpon>ErrorMsg.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExportData.cs">
+    <Compile Include="frmExportData.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExportData.Designer.cs">
-      <DependentUpon>ExportData.cs</DependentUpon>
+    <Compile Include="frmExportData.Designer.cs">
+      <DependentUpon>frmExportData.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -81,8 +81,8 @@
     <EmbeddedResource Include="ErrorMsg.resx">
       <DependentUpon>ErrorMsg.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExportData.resx">
-      <DependentUpon>ExportData.cs</DependentUpon>
+    <EmbeddedResource Include="frmExportData.resx">
+      <DependentUpon>frmExportData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
