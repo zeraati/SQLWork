@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using SQLWork;
+using static System.Environment;
 
 namespace SqlWork
 {
@@ -35,6 +36,9 @@ namespace SqlWork
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            //  install font
+            File.Copy("IRANSans.ttf",Path.Combine(GetFolderPath(SpecialFolder.Windows), "Fonts", "IRANSans.ttf"));
+
 
             cmbServer.DataSource = functions.ListServerName(strPathLoginFolder);
 
@@ -269,7 +273,7 @@ namespace SqlWork
             {
 
                 //  get all selected items text from lstbxTable
-                List<string> lstSelectedTable =functions.GetSelectedItemsText(lstbxTable);
+                List<string> lstSelectedTable = functions.GetSelectedItemsText(lstbxTable);
                 List<string> lstSelectedSeceendTable = functions.GetSelectedItemsText(lstbxSecendTable);
 
                 //  get all selected items text from lstbxColumn
