@@ -55,7 +55,7 @@
             this.lstbxSecendColumn = new System.Windows.Forms.ListBox();
             this.btnCopy = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.grbSvrConn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).BeginInit();
             this.SuspendLayout();
@@ -76,7 +76,7 @@
             this.txtUser.Location = new System.Drawing.Point(428, 33);
             this.txtUser.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtUser.Name = "txtUser";
-            this.txtUser.Size = new System.Drawing.Size(174, 28);
+            this.txtUser.Size = new System.Drawing.Size(174, 21);
             this.txtUser.TabIndex = 2;
             // 
             // txtPass
@@ -85,7 +85,7 @@
             this.txtPass.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtPass.Name = "txtPass";
             this.txtPass.PasswordChar = '*';
-            this.txtPass.Size = new System.Drawing.Size(174, 28);
+            this.txtPass.Size = new System.Drawing.Size(174, 21);
             this.txtPass.TabIndex = 3;
             // 
             // cmbServer
@@ -95,7 +95,7 @@
             this.cmbServer.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbServer.Name = "cmbServer";
             this.cmbServer.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmbServer.Size = new System.Drawing.Size(174, 28);
+            this.cmbServer.Size = new System.Drawing.Size(174, 23);
             this.cmbServer.TabIndex = 1;
             this.cmbServer.SelectedIndexChanged += new System.EventHandler(this.cmbServer_SelectedIndexChanged);
             // 
@@ -104,7 +104,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(869, 36);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 20);
+            this.label1.Size = new System.Drawing.Size(44, 15);
             this.label1.TabIndex = 8;
             this.label1.Text = "نام سرور";
             // 
@@ -113,7 +113,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(608, 36);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 20);
+            this.label2.Size = new System.Drawing.Size(51, 15);
             this.label2.TabIndex = 9;
             this.label2.Text = "نام کاربری";
             // 
@@ -122,7 +122,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(395, 36);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(23, 20);
+            this.label3.Size = new System.Drawing.Size(24, 15);
             this.label3.TabIndex = 10;
             this.label3.Text = "رمز";
             // 
@@ -133,7 +133,7 @@
             this.cmbDB.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbDB.Name = "cmbDB";
             this.cmbDB.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmbDB.Size = new System.Drawing.Size(174, 28);
+            this.cmbDB.Size = new System.Drawing.Size(174, 23);
             this.cmbDB.TabIndex = 5;
             this.cmbDB.SelectedIndexChanged += new System.EventHandler(this.cmbDB_SelectedIndexChanged);
             // 
@@ -143,7 +143,7 @@
             this.chbRemember.Location = new System.Drawing.Point(152, 35);
             this.chbRemember.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.chbRemember.Name = "chbRemember";
-            this.chbRemember.Size = new System.Drawing.Size(55, 24);
+            this.chbRemember.Size = new System.Drawing.Size(50, 19);
             this.chbRemember.TabIndex = 6;
             this.chbRemember.Text = "ذخیره";
             this.chbRemember.UseVisualStyleBackColor = true;
@@ -173,7 +173,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(208, 148);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(36, 20);
+            this.label4.Size = new System.Drawing.Size(28, 15);
             this.label4.TabIndex = 12;
             this.label4.Text = "ستون";
             // 
@@ -182,14 +182,14 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(21, 148);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(38, 20);
+            this.label5.Size = new System.Drawing.Size(29, 15);
             this.label5.TabIndex = 12;
             this.label5.Text = "جدول";
             // 
             // lstbxColumn
             // 
             this.lstbxColumn.FormattingEnabled = true;
-            this.lstbxColumn.ItemHeight = 20;
+            this.lstbxColumn.ItemHeight = 15;
             this.lstbxColumn.Location = new System.Drawing.Point(211, 171);
             this.lstbxColumn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstbxColumn.Name = "lstbxColumn";
@@ -202,7 +202,7 @@
             // lstbxTable
             // 
             this.lstbxTable.FormattingEnabled = true;
-            this.lstbxTable.ItemHeight = 20;
+            this.lstbxTable.ItemHeight = 15;
             this.lstbxTable.Location = new System.Drawing.Point(23, 171);
             this.lstbxTable.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstbxTable.Name = "lstbxTable";
@@ -228,7 +228,7 @@
             // 
             this.lstbxReport.FormattingEnabled = true;
             this.lstbxReport.HorizontalScrollbar = true;
-            this.lstbxReport.ItemHeight = 20;
+            this.lstbxReport.ItemHeight = 15;
             this.lstbxReport.Items.AddRange(new object[] {
             "********************    Report    **********************",
             "============================================"});
@@ -236,7 +236,7 @@
             this.lstbxReport.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstbxReport.Name = "lstbxReport";
             this.lstbxReport.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.lstbxReport.Size = new System.Drawing.Size(324, 284);
+            this.lstbxReport.Size = new System.Drawing.Size(324, 274);
             this.lstbxReport.TabIndex = 31;
             // 
             // checkbxSelectAllColumn
@@ -245,7 +245,7 @@
             this.checkbxSelectAllColumn.Location = new System.Drawing.Point(302, 146);
             this.checkbxSelectAllColumn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkbxSelectAllColumn.Name = "checkbxSelectAllColumn";
-            this.checkbxSelectAllColumn.Size = new System.Drawing.Size(86, 24);
+            this.checkbxSelectAllColumn.Size = new System.Drawing.Size(72, 19);
             this.checkbxSelectAllColumn.TabIndex = 32;
             this.checkbxSelectAllColumn.Text = "انتخاب همه";
             this.checkbxSelectAllColumn.UseVisualStyleBackColor = true;
@@ -257,7 +257,7 @@
             this.checkbxSelectAllTable.Location = new System.Drawing.Point(115, 146);
             this.checkbxSelectAllTable.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.checkbxSelectAllTable.Name = "checkbxSelectAllTable";
-            this.checkbxSelectAllTable.Size = new System.Drawing.Size(86, 24);
+            this.checkbxSelectAllTable.Size = new System.Drawing.Size(72, 19);
             this.checkbxSelectAllTable.TabIndex = 32;
             this.checkbxSelectAllTable.Text = "انتخاب همه";
             this.checkbxSelectAllTable.UseVisualStyleBackColor = true;
@@ -266,7 +266,7 @@
             // lstbxWorks
             // 
             this.lstbxWorks.FormattingEnabled = true;
-            this.lstbxWorks.ItemHeight = 20;
+            this.lstbxWorks.ItemHeight = 15;
             this.lstbxWorks.Items.AddRange(new object[] {
             "DeletTable",
             "CheckUniqColumn",
@@ -287,13 +287,13 @@
             // lstbxSecendTable
             // 
             this.lstbxSecendTable.FormattingEnabled = true;
-            this.lstbxSecendTable.ItemHeight = 20;
+            this.lstbxSecendTable.ItemHeight = 15;
             this.lstbxSecendTable.Location = new System.Drawing.Point(23, 391);
             this.lstbxSecendTable.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstbxSecendTable.Name = "lstbxSecendTable";
             this.lstbxSecendTable.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstbxSecendTable.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstbxSecendTable.Size = new System.Drawing.Size(174, 204);
+            this.lstbxSecendTable.Size = new System.Drawing.Size(174, 199);
             this.lstbxSecendTable.Sorted = true;
             this.lstbxSecendTable.TabIndex = 31;
             this.lstbxSecendTable.SelectedIndexChanged += new System.EventHandler(this.lstbxSecendTable_SelectedIndexChanged);
@@ -314,9 +314,10 @@
             this.lblDBName.AutoSize = true;
             this.lblDBName.Location = new System.Drawing.Point(61, 106);
             this.lblDBName.Name = "lblDBName";
-            this.lblDBName.Size = new System.Drawing.Size(32, 20);
+            this.lblDBName.Size = new System.Drawing.Size(23, 15);
             this.lblDBName.TabIndex = 12;
             this.lblDBName.Text = "بانک";
+            this.lblDBName.Click += new System.EventHandler(this.lblDBName_Click);
             // 
             // cmbWork
             // 
@@ -325,19 +326,19 @@
             this.cmbWork.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.cmbWork.Name = "cmbWork";
             this.cmbWork.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.cmbWork.Size = new System.Drawing.Size(191, 28);
+            this.cmbWork.Size = new System.Drawing.Size(191, 23);
             this.cmbWork.TabIndex = 5;
             // 
             // lstbxSecendColumn
             // 
             this.lstbxSecendColumn.FormattingEnabled = true;
-            this.lstbxSecendColumn.ItemHeight = 20;
+            this.lstbxSecendColumn.ItemHeight = 15;
             this.lstbxSecendColumn.Location = new System.Drawing.Point(211, 391);
             this.lstbxSecendColumn.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lstbxSecendColumn.Name = "lstbxSecendColumn";
             this.lstbxSecendColumn.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lstbxSecendColumn.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstbxSecendColumn.Size = new System.Drawing.Size(174, 204);
+            this.lstbxSecendColumn.Size = new System.Drawing.Size(174, 199);
             this.lstbxSecendColumn.Sorted = true;
             this.lstbxSecendColumn.TabIndex = 31;
             // 
@@ -363,22 +364,22 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // button1
+            // btnExport
             // 
-            this.button1.Location = new System.Drawing.Point(336, 106);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(49, 23);
-            this.button1.TabIndex = 39;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnExport.Location = new System.Drawing.Point(336, 106);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(49, 23);
+            this.btnExport.TabIndex = 39;
+            this.btnExport.Text = "اکسپورت";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // frmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(950, 609);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.checkbxSelectAllTable);
             this.Controls.Add(this.checkbxSelectAllColumn);
@@ -397,7 +398,7 @@
             this.Controls.Add(this.cmbWork);
             this.Controls.Add(this.lstbxColumn);
             this.Controls.Add(this.lstbxSecendColumn);
-            this.Font = new System.Drawing.Font("IRANSans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(178)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmMain";
@@ -442,7 +443,7 @@
         private System.Windows.Forms.ListBox lstbxSecendColumn;
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnExport;
     }
 }
 

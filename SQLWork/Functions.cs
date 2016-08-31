@@ -81,9 +81,6 @@ namespace SqlWork
         #endregion
 
 
-
-
-
         #region ReadTxt
         /// <summary>
         /// read text file
@@ -635,21 +632,62 @@ namespace SqlWork
         #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         //****************************  sql functin *****************************
         //**********************************************************************
+
+
+        #region SqlGetDataTables
+
+        public DataTable[] SqlGetDataTables(string[] tables, SqlConnection sqlConnection)
+        {
+            //Query all the server tables and stick 'em into DataTables           
+            DataTable[] dataTables = new DataTable[tables.Length];
+
+            for (int tableIndex = 0; tableIndex < tables.Length; tableIndex++)
+            {
+                string qry = "SELECT * FROM " + tables[tableIndex] + ";";
+                DataTable dtTable = new DataTable();
+
+                using (SqlConnection connection = new SqlConnection(sqlConnection.ConnectionString))
+                {
+                    if (connection.State != ConnectionState.Open) connection.Open();
+                    using (SqlCommand cmd = new SqlCommand(qry, connection))
+                    {
+                        SqlDataAdapter adapter = new SqlDataAdapter();
+                        adapter.SelectCommand = cmd;
+                        adapter.Fill(dtTable);
+                    }
+                }
+                dtTable.TableName = tables[tableIndex];
+                dataTables[tableIndex] = dtTable;
+                //                Console.WriteLine(" Rows: " + dtTable.Rows.Count);
+            }
+            return dataTables;
+        }
+
+        #endregion
+
+
+        public DataTable SqlSelectAll(string strTableName, SqlConnection sqlConnection)
+        {
+            return SqlDataAdapter(sqlConnection, "SELECT * FROM [" + strTableName + "]");
+        }
+
+        #region SqlDataTableInfo
+        public DataTable SqlTableInfo(string strTableName, SqlConnection sqlConnection)
+        {
+            string strQuery =  "SELECT a.COLUMN_NAME , " +
+                               "ORDINAL_POSITION , " +
+                               "COLUMN_DEFAULT , " +
+                               "CASE WHEN IS_NULLABLE='NO' THEN 'NOT NULL' ELSE 'NULL' END , " +
+                               "CASE WHEN a.CHARACTER_MAXIMUM_LENGTH IS NULL THEN DATA_TYPE ELSE DATA_TYPE +' ('+CAST(CHARACTER_MAXIMUM_LENGTH AS VARCHAR(10))+')' END, " +
+                               "COLUMNPROPERTY(object_id(a.TABLE_NAME), a.COLUMN_NAME, 'IsIdentity')IsIdentity " +
+                               "FROM INFORMATION_SCHEMA.COLUMNS a " +
+                               "WHERE a.TABLE_NAME=N'" + strTableName + "'";
+            return SqlDataAdapter(sqlConnection, strQuery);
+        }
+        #endregion
+
 
 
         #region SqlConnection

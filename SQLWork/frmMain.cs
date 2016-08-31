@@ -15,6 +15,7 @@ using PersiaSL;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SQLWork;
 
 namespace SqlWork
 {
@@ -23,8 +24,7 @@ namespace SqlWork
         string CopyQuery = "";
         string strPathLoginFolder = @"..\Login.pos";
 
-        Functions func = new Functions();
-        Dictionary<int, string> dicDBName = new Dictionary<int, string>();
+        Functions functions = new Functions();
         SqlConnection sqlCon = new SqlConnection();
 
 
@@ -36,7 +36,7 @@ namespace SqlWork
         private void frmMain_Load(object sender, EventArgs e)
         {
 
-            cmbServer.DataSource = func.ListServerName(strPathLoginFolder);
+            cmbServer.DataSource = functions.ListServerName(strPathLoginFolder);
 
 
             //*********** defult!!!!!!
@@ -57,7 +57,7 @@ namespace SqlWork
 
 
             //  get server info
-            lstServerInfo = func.ServerUserPass(strPathLoginFolder, strServer);
+            lstServerInfo = functions.ServerUserPass(strPathLoginFolder, strServer);
             txtUser.Text = lstServerInfo[1];
             txtPass.Text = lstServerInfo[2];
         }
@@ -73,11 +73,11 @@ namespace SqlWork
 
 
             //  create sql connection
-            sqlCon = func.SqlConnect(strServer, strUser, strPass);
+            sqlCon = functions.SqlConnect(strServer, strUser, strPass);
 
 
             //  test sql connection //  result yes
-            if (func.TestConn(sqlCon))
+            if (functions.TestConn(sqlCon))
             {
 
                 #region save login info with encrypt pass
@@ -88,7 +88,7 @@ namespace SqlWork
                     //  encrypt pass
                     string strPassEncrypt = CryptorEngine.Encrypt(strPass, true);
 
-                    List<string> lst = func.ReadTxt(strPathLoginFolder);
+                    List<string> lst = functions.ReadTxt(strPathLoginFolder);
 
 
                     //  save login when login file info is empty
@@ -99,26 +99,26 @@ namespace SqlWork
                     //  save or replace login when login file info is not empty
                     if (File.ReadAllText(strPathLoginFolder) != "")
                     {
-                        int intFind = func.ListFind(lst, strServer);
+                        int intFind = functions.ListFind(lst, strServer);
 
                         if (intFind != -1)
                         {
                             lst[intFind] = strServer + "," + strUser + "," + strPassEncrypt;
-                            func.SaveListToText(lst, strPathLoginFolder);
+                            functions.SaveListToText(lst, strPathLoginFolder);
                         }
 
                         else File.WriteAllText(strPathLoginFolder, File.ReadAllText(strPathLoginFolder) + "\r\n" + strServer + "," + strUser + "," + strPassEncrypt);
                     }
 
                     //  load server name
-                    cmbServer.DataSource = func.ListServerName(strPathLoginFolder);
+                    cmbServer.DataSource = functions.ListServerName(strPathLoginFolder);
                 }
 
                 #endregion
 
 
                 //  load database name  // set source cmbDBNames 
-                func.ComboBoxSource(cmbDB, func.SqlGetDBName(sqlCon));
+                functions.ComboBoxSource(cmbDB, functions.SqlGetDBName(sqlCon));
 
 
                 // set btnConnect text
@@ -138,17 +138,24 @@ namespace SqlWork
         #endregion
 
 
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            frmExportData frmExportData = new frmExportData();
+            frmExportData.ShowDialog();
+        }
+
+
         #region cmb change db
         private void cmbDB_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbDB.Text != "System.Data.DataRowView")
             {
                 //  change db
-                sqlCon = func.SqlConnectionChangeDB(sqlCon, cmbDB.Text);
+                sqlCon = functions.SqlConnectionChangeDB(sqlCon, cmbDB.Text);
 
                 //set tale name source
-                lstbxTable.DataSource = func.SqlTableName(sqlCon);
-                lstbxSecendTable.DataSource = func.SqlTableName(sqlCon);
+                lstbxTable.DataSource = functions.SqlTableName(sqlCon);
+                lstbxSecendTable.DataSource = functions.SqlTableName(sqlCon);
 
                 // unchecked selected all
                 checkbxSelectAllTable.Checked = checkbxSelectAllColumn.Checked = false;
@@ -186,7 +193,7 @@ namespace SqlWork
             {
                 string strTableName = lstbxTable.GetItemText(lstbxTable.SelectedItem);
                 string strQuery = "SELECT TOP 200 * FROM [" + strTableName + "]";
-                dgvResult.DataSource = func.SqlDataAdapter(sqlCon, strQuery, "SqlDataAdapter", strTableName);
+                dgvResult.DataSource = functions.SqlDataAdapter(sqlCon, strQuery, "SqlDataAdapter", strTableName);
             }
 
         }
@@ -214,7 +221,7 @@ namespace SqlWork
             {
                 lstbxWorks.Height = lstbxTable.Height = lstbxColumn.Height = 204;
 
-                cmbWork.DataSource = func.SqlColumns(sqlCon, strTable);
+                cmbWork.DataSource = functions.SqlColumns(sqlCon, strTable);
             }
             #endregion
 
@@ -255,19 +262,19 @@ namespace SqlWork
             this.Enabled = false; this.Cursor = Cursors.WaitCursor;
 
             //  get all selected items text from lstbxWorks
-            List<string> lstSelectedWorks = GetSelectedItemsText(lstbxWorks);
+            List<string> lstSelectedWorks = functions.GetSelectedItemsText(lstbxWorks);
 
 
             if (lstSelectedWorks.Count > 0)
             {
 
                 //  get all selected items text from lstbxTable
-                List<string> lstSelectedTable = GetSelectedItemsText(lstbxTable);
-                List<string> lstSelectedSeceendTable = GetSelectedItemsText(lstbxSecendTable);
+                List<string> lstSelectedTable =functions.GetSelectedItemsText(lstbxTable);
+                List<string> lstSelectedSeceendTable = functions.GetSelectedItemsText(lstbxSecendTable);
 
                 //  get all selected items text from lstbxColumn
-                List<string> lstSelectedColumn = GetSelectedItemsText(lstbxColumn);
-                List<string> lstSelectedSecendColumn = GetSelectedItemsText(lstbxSecendColumn);
+                List<string> lstSelectedColumn = functions.GetSelectedItemsText(lstbxColumn);
+                List<string> lstSelectedSecendColumn = functions.GetSelectedItemsText(lstbxSecendColumn);
 
                 string strWork = lstSelectedWorks[0];
                 string strTable = lstbxTable.GetItemText(lstbxTable.SelectedItem);
@@ -363,7 +370,7 @@ namespace SqlWork
 
 
             // lstbxColumn source
-            lstbxColumn.DataSource = func.SqlColumns(sqlConnection, strTable);
+            lstbxColumn.DataSource = functions.SqlColumns(sqlConnection, strTable);
 
 
 
@@ -412,31 +419,6 @@ namespace SqlWork
         #endregion
 
 
-        #region GetSelectedItemsText
-        public List<string> GetSelectedItemsText(ListBox listBox)
-        {
-            int intSelectedIndex = 0;
-            string strSelectedText = "";
-            List<string> lstSelectedItemsText = new List<string>();
-
-
-            foreach (var item in listBox.SelectedItems)
-            {
-                // index of select
-                intSelectedIndex = listBox.Items.IndexOf(item);
-
-                // text of select
-                strSelectedText = listBox.GetItemText(listBox.Items[intSelectedIndex]);
-
-                //  add selected text to list
-                lstSelectedItemsText.Add(strSelectedText);
-            }
-
-            return lstSelectedItemsText;
-        }
-        #endregion
-
-
         #region DeletTable
         public void DeletTable(string Work, List<string> lstSelectedTable)
         {
@@ -452,7 +434,7 @@ namespace SqlWork
                 if (dr == DialogResult.Yes)
                 {
                     for (int i = 0; i < lstSelectedTable.Count; i++)
-                    { lstbxReport.Items.Add(func.SqlDelTable(sqlCon, lstSelectedTable[i])); }
+                    { lstbxReport.Items.Add(functions.SqlDelTable(sqlCon, lstSelectedTable[i])); }
                 }
 
                 lstbxReport.Items.Add("");
@@ -471,7 +453,7 @@ namespace SqlWork
                 string strQuery = "";
 
                 for (int i = 0; i < lstSelectedColumn.Count; i++)
-                { lstbxReport.Items.Add(func.SqlCheckUniqColumn(sqlCon, strTable, lstSelectedColumn[i], out strQuery)); }
+                { lstbxReport.Items.Add(functions.SqlCheckUniqColumn(sqlCon, strTable, lstSelectedColumn[i], out strQuery)); }
 
                 lstbxReport.Items.Add("");
 
@@ -489,7 +471,7 @@ namespace SqlWork
             {
                 string strQry, result;
 
-                result = func.SqlGetUniqData(sqlConnection, strTable, strColumn, out strQry);
+                result = functions.SqlGetUniqData(sqlConnection, strTable, strColumn, out strQry);
 
 
                 lstbxReport.Items.Add(result);
@@ -517,7 +499,7 @@ namespace SqlWork
                 if (dr == DialogResult.Yes)
                 {
                     for (int i = 0; i < lstSelectedColumn.Count; i++)
-                    { lstbxReport.Items.Add(func.SqlDropColumn(sqlCon, strTable, lstSelectedColumn[i], out strQuery)); }
+                    { lstbxReport.Items.Add(functions.SqlDropColumn(sqlCon, strTable, lstSelectedColumn[i], out strQuery)); }
                 }
 
                 lstbxReport.Items.Add("");
@@ -537,11 +519,11 @@ namespace SqlWork
 
             //  join table just show - its select
             if (strWork == "JoinTwoTable")
-            { dt = func.SqlJoin(sqlCon, strFirstTable, strSecendTable, strJoinColumn, lstFirsTableColumn, lstSecendTableColumn, out strQuery); }
+            { dt = functions.SqlJoin(sqlCon, strFirstTable, strSecendTable, strJoinColumn, lstFirsTableColumn, lstSecendTableColumn, out strQuery); }
 
             //  join table & create new table
             if (strWork == "JoinTwoTableIntoNewTable")
-            { dt = func.SqlJoin(sqlCon, strFirstTable, strSecendTable, strJoinColumn, lstFirsTableColumn, lstSecendTableColumn, out strQuery, true); }
+            { dt = functions.SqlJoin(sqlCon, strFirstTable, strSecendTable, strJoinColumn, lstFirsTableColumn, lstSecendTableColumn, out strQuery, true); }
 
 
             //  copy query
@@ -564,7 +546,7 @@ namespace SqlWork
             if (Work == "RenameTable")
             {
                 //  rename
-                strResult = func.SqlRename(sqlCon, "Table", strOldName, strNewName, "", out strQuery);
+                strResult = functions.SqlRename(sqlCon, "Table", strOldName, strNewName, "", out strQuery);
 
                 //  add report
                 lstbxReport.Items.Add(strResult + strOldName + " => " + strNewName);
@@ -586,7 +568,7 @@ namespace SqlWork
             if (Work == "RenameColumn")
             {
                 //  rename
-                strResult = func.SqlRename(sqlCon, "Column", strOldName, strNewName, strTable, out strQuery);
+                strResult = functions.SqlRename(sqlCon, "Column", strOldName, strNewName, strTable, out strQuery);
 
                 //  add report
                 lstbxReport.Items.Add(strResult + " => " + strTable + strOldName + " => " + strNewName);
@@ -613,19 +595,19 @@ namespace SqlWork
 
             //  cmbWork sorce
             if (strWork == "JoinTwoTable" || strWork == "JoinTwoTableIntoNewTable")
-            { cmbWork.DataSource = func.SqlColumns(sqlCon, strTable); }
+            { cmbWork.DataSource = functions.SqlColumns(sqlCon, strTable); }
 
 
             //  cmbWork sorce
             if (strWork == "RenameTable")
             {
-                cmbWork.DataSource = func.SqlTableName(sqlCon);
+                cmbWork.DataSource = functions.SqlTableName(sqlCon);
                 cmbWork.Text = strTable;
             }
 
             //  cmbWork sorce
             if (strWork == "RenameColumn")
-            { cmbWork.DataSource = func.SqlColumns(sqlCon, strTable); }
+            { cmbWork.DataSource = functions.SqlColumns(sqlCon, strTable); }
         }
 
 
@@ -633,9 +615,14 @@ namespace SqlWork
 
         #endregion
 
-        private void button1_Click(object sender, EventArgs e)
+        private void lblDBName_Click(object sender, EventArgs e)
         {
+
         }
+
+
+
+
     }
 
 }
