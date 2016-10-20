@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.SqlServer.Management.Common;
-using Persia;
 using PersiaSL;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
@@ -24,6 +23,7 @@ namespace SqlWork
     {
         string CopyQuery = "";
         string strPathLoginFolder = @"..\Login.pos";
+        List<string> lstAllDataBases;
 
         Functions functions = new Functions();
         SqlConnection sqlCon = new SqlConnection();
@@ -37,7 +37,15 @@ namespace SqlWork
         private void frmMain_Load(object sender, EventArgs e)
         {
             //  install font
-            File.Copy("IRANSans.ttf",Path.Combine(GetFolderPath(SpecialFolder.Windows), "Fonts", "IRANSans.ttf"));
+
+
+            string fontName = "IRANSans";
+            using (Font fontTester = new Font(fontName, 12, FontStyle.Regular, GraphicsUnit.Pixel))
+            {
+                if (fontTester.Name != fontName)
+                { File.Copy("IRANSans.ttf", Path.Combine(GetFolderPath(SpecialFolder.Windows), "Fonts", "IRANSans.ttf")); }
+            }
+
 
 
             cmbServer.DataSource = functions.ListServerName(strPathLoginFolder);
@@ -121,8 +129,11 @@ namespace SqlWork
                 #endregion
 
 
-                //  load database name  // set source cmbDBNames 
+                //  load all database name  // set source cmbDBNames 
                 functions.ComboBoxSource(cmbDB, functions.SqlGetDBName(sqlCon));
+
+                // list of all database name 
+                lstAllDataBases = functions.DataTableToList(functions.SqlGetDBName(sqlCon));
 
 
                 // set btnConnect text
@@ -216,14 +227,20 @@ namespace SqlWork
         #region select work
         private void lstbxWorks_SelectedIndexChanged(object sender, EventArgs e)
         {
+            // get work
             string strWork = lstbxWorks.GetItemText(lstbxWorks.SelectedItem);
+
+            // get table
             string strTable = lstbxTable.GetItemText(lstbxTable.SelectedItem);
+
+            // get column
             string strColumn = lstbxTable.GetItemText(lstbxColumn.SelectedItem);
+
 
             #region JoinTable
             if (strWork == "JoinTwoTable" || strWork == "JoinTwoTableIntoNewTable")
             {
-                lstbxWorks.Height = lstbxTable.Height = lstbxColumn.Height = 204;
+                lstbxWorks.Height = lstbxTable.Height = lstbxColumn.Height = 251;
 
                 cmbWork.DataSource = functions.SqlColumns(sqlCon, strTable);
             }
@@ -238,8 +255,8 @@ namespace SqlWork
                 if (strWork == "RenameColumn") { cmbWork.Text = strColumn; }
 
 
-                lstbxWorks.Height = 204;
-                lstbxTable.Height = lstbxColumn.Height = 424;
+                lstbxWorks.Height = 251;
+                lstbxTable.Height = lstbxColumn.Height = 517;
             }
             #endregion
 
@@ -248,8 +265,8 @@ namespace SqlWork
 
             else
             {
-                lstbxTable.Height = lstbxColumn.Height = 424;
-                lstbxWorks.Height = 244;
+                lstbxTable.Height = lstbxColumn.Height = 517;
+                lstbxWorks.Height = 308;
             }
 
             #endregion
@@ -306,6 +323,8 @@ namespace SqlWork
 
 
                 RenameColumn(strWork, strTable, strColumn, cmbWork.Text);
+
+                ReportDataBase(strWork, cmbDB.Text);
             }
 
             //  go end in lstbxReport
@@ -585,9 +604,106 @@ namespace SqlWork
             return strResult;
         }
 
-
         #endregion
 
+
+        #region ReportDataBase
+
+        public void ReportDataBase(string Work, string strDataBase)
+        {
+            DataTable dtReport = new DataTable();
+
+            if (Work == "ReportDataBase")
+            {
+
+                dtReport.Columns.Add("DataBase", typeof(string));
+                dtReport.Columns.Add("Table", typeof(string));
+                dtReport.Columns.Add("Column", typeof(string));
+                dtReport.Columns.Add("AllRows", typeof(Int32));
+                dtReport.Columns.Add("FillRows", typeof(Int32));
+                dtReport.Columns.Add("NullRows", typeof(Int32));
+                dtReport.Columns.Add("PercentFillRows", typeof(Int32));
+                dtReport.Columns.Add("PercentNullRows", typeof(Int32));
+
+                // change connection for evry databases and  list of all table for evry databases
+
+                // change conection db
+                SqlConnection sqlCN = sqlCon;
+                functions.SqlConnectionChangeDB(sqlCN, strDataBase);
+
+
+                // list of all table for this connection
+                List<string> lstAllTables = functions.SqlTableName(sqlCN);
+
+
+                // list of all column of every table
+                int intCntTB = lstAllTables.Count;
+                for (int j = 0; j < intCntTB; j++)
+                {
+                    //  list of all column of this table
+                    List<string> lstAllcolumn = functions.SqlColumns(sqlCN, lstAllTables[j]);
+
+
+                    // count empty recoreds for evry column
+                    int intCntCL = lstAllcolumn.Count;
+                    for (int k = 0; k < intCntCL; k++)
+                    {
+                        DataTable dt;
+
+                        // count all recored for table
+                        string qAllRows = "SELECT COUNT(*) FROM [" + lstAllTables[j] + "]";
+                        int intAllRows = 0;
+
+                        dt = functions.SqlDataAdapter(sqlCN, qAllRows);
+                        if (dt.Rows.Count > 0)
+                        {
+                            if (!Int32.TryParse(dt.Rows[0][0].ToString(), out intAllRows))
+                            { intAllRows = -99999; }
+                        }
+
+
+                        //  count all null rows from table
+                        string qNullRows = "SELECT COUNT(*) FROM" +
+                        " (SELECT * FROM [" + lstAllTables[j] + "] WHERE [" + lstAllcolumn[k] + "] IS NULL OR RTRIM(LTRIM([" + lstAllcolumn[k] + "])) = '')a";
+                        int intNullRows = 0;
+
+                        dt = functions.SqlDataAdapter(sqlCN, qNullRows);
+
+                        if (dt.Rows.Count > 0)
+                        {
+                            if (!Int32.TryParse(dt.Rows[0][0].ToString(), out intNullRows))
+                            { intNullRows = -99999; }
+                        }
+
+
+                        // add new rows
+                        DataRow dr = dtReport.NewRow();
+
+                        dr["DataBase"] = strDataBase;
+                        dr["Table"] = lstAllTables[j];
+                        dr["Column"] = lstAllcolumn[k];
+                        dr["AllRows"] = intAllRows;
+                        dr["NullRows"] = intNullRows;
+                        dr["FillRows"] = intAllRows - intNullRows;
+                        if (intAllRows > 0) dr["PercentFillRows"] = (100 * (intAllRows - intNullRows)) / intAllRows;
+                        if (intAllRows > 0) dr["PercentNullRows"] = (100 * intNullRows) / intAllRows;
+
+                        dtReport.Rows.Add(dr);
+                    }
+
+                }
+
+            }
+
+            dgvResult.DataSource = dtReport;
+
+
+
+            dtReport.ExportToExcel(Directory.GetCurrentDirectory() + "\\ReportDataBase_" + strDataBase + ".xlsx");
+
+        }
+
+        #endregion
 
         #region cmbWorkSource
 

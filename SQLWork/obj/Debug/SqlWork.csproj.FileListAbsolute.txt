@@ -8,4 +8,4 @@ D:\Projects\SqlWork\SqlWork\bin\Debug\SqlWork.pdb
 D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.exe
 D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.pdb
 D:\Projects\SqlWork\SqlWork\obj\Debug\SqlWork.csprojResolveAssemblyReference.cache
-D:\Projects\SQLWork\SqlWork\obj\Debug\SQLWork.frmExportData.resources
+D:\Projects\SQLWork\SqlWork\obj\Debug\SQLWork.frmExport.resources

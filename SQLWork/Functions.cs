@@ -826,10 +826,10 @@ namespace SqlWork
                 da.Fill(dt);
                 return dt;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 if (stat != "SqlDataAdapter")
-                    MessageBox.Show(stat + Environment.NewLine + e.Message, "خطا");
+                    MessageBox.Show(stat + Environment.NewLine + ex.Message, "خطا");
                 return dt;
             }
         }

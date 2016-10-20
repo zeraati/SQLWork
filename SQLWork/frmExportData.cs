@@ -49,8 +49,8 @@ namespace SQLWork
 
             //  get server info
             lstServerInfo = functions.ServerUserPass(strPathLoginFolder, strServerMain);
-            txtUserMain.Text = lstServerInfo[1];
-            txtPassMain.Text = lstServerInfo[2];
+            //txtUserMain.Text = lstServerInfo[1];
+            //txtPassMain.Text = lstServerInfo[2];
         }
 
         private void cmbServerSecond_SelectedIndexChanged(object sender, EventArgs e)
@@ -64,8 +64,8 @@ namespace SQLWork
 
             //  get server info
             lstServerInfo = functions.ServerUserPass(strPathLoginFolder, strServerSecond);
-            txtUserSecond.Text = lstServerInfo[1];
-            txtPassSecond.Text = lstServerInfo[2];
+            //txtUserSecond.Text = lstServerInfo[1];
+            //txtPassSecond.Text = lstServerInfo[2];
         }
 
         private void btnConnect_Click(object sender, EventArgs e)
@@ -73,12 +73,12 @@ namespace SQLWork
             if (cmbServerMabda.Text != cmbServerMaghsad.Text)
             {
                 // get server info ==> servermain & serversecond , user , pass
-                string strServerMain = cmbServerMabda.Text, strUserMain = txtUserMain.Text, strPassMain = txtPassMain.Text;
-                string strServerSecond = cmbServerMaghsad.Text, strUserSecond = txtUserSecond.Text, strPassSecond = txtPassSecond.Text;
+                //string strServerMain = cmbServerMabda.Text, strUserMain = txtUserMain.Text, strPassMain = txtPassMain.Text;
+                //string strServerSecond = cmbServerMaghsad.Text, strUserSecond = txtUserSecond.Text, strPassSecond = txtPassSecond.Text;
 
                 //  create sql connection
-                sqlConMain = functions.SqlConnect(strServerMain, strUserMain, strPassMain);
-                sqlConSecond = functions.SqlConnect(strServerSecond, strUserSecond, strPassSecond);
+                //sqlConMain = functions.SqlConnect(strServerMain, strUserMain, strPassMain);
+                //sqlConSecond = functions.SqlConnect(strServerSecond, strUserSecond, strPassSecond);
 
 
                 //  test sql connection //  result yes
@@ -135,7 +135,7 @@ namespace SQLWork
 
         private void lstBxTableSecond_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TableSelectedIndexChanged(sqlConSecond, lstBxTableMaghsad, lstBxColumnSecond);
+            //TableSelectedIndexChanged(sqlConSecond, lstBxTableMaghsad, lstBxColumnSecond);
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -143,7 +143,7 @@ namespace SQLWork
             List<string> lstSelectedTableNameMain = functions.GetSelectedItemsText(lstBxTableMabda);
             DataTable Table = new DataTable();
 
-            dgvTableInfo.DataSource = functions.SqlTableInfo(lstSelectedTableNameMain[0], sqlConMain);            
+            //dgvTableInfo.DataSource = functions.SqlTableInfo(lstSelectedTableNameMain[0], sqlConMain);            
 
             SqlBulkCopyColumnMapping SCM = new SqlBulkCopyColumnMapping("a", "d");
             SqlBulkCopy SBC = new SqlBulkCopy(sqlConSecond);
