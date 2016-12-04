@@ -378,6 +378,22 @@ namespace SqlWork
         #endregion
 
 
+        #region ListToDataTable
+        public DataTable ListToDataTable(List<string> lst, string strColumnName=null)
+        {
+            if (strColumnName == "") { strColumnName = "ColumnName"; }
+            DataTable dt = new DataTable();
+            dt.Columns.Add(strColumnName, typeof(string));
+
+            DataRow dr = null;
+            for (int i = 0; i < lst.Count; i++)
+            { dr = dt.NewRow(); dr[0] = lst[i];dt.Rows.Add(dr); }
+
+            return dt;
+        }
+        #endregion
+
+
         #region DataTableToList
         public List<string> DataTableToList(DataTable dt, int IndexColumn = 0)
         {
@@ -676,7 +692,7 @@ namespace SqlWork
         #region SqlDataTableInfo
         public DataTable SqlTableInfo(string strTableName, SqlConnection sqlConnection)
         {
-            string strQuery =  "SELECT a.COLUMN_NAME , " +
+            string strQuery = "SELECT a.COLUMN_NAME , " +
                                "ORDINAL_POSITION , " +
                                "COLUMN_DEFAULT , " +
                                "CASE WHEN IS_NULLABLE='NO' THEN 'NOT NULL' ELSE 'NULL' END , " +
@@ -834,9 +850,19 @@ namespace SqlWork
             }
         }
 
-
         #endregion
 
+        #region SqlDataAdapter
+
+        public string SqlGetOneRow(SqlConnection sqlConnection, string strQuery)
+        {
+            DataTable dt = new DataTable();
+            SqlDataAdapter da = new SqlDataAdapter(strQuery, sqlConnection);
+            da.Fill(dt);
+            return dt.Rows[0][0].ToString();
+        }
+
+        #endregion
 
         #region SqlTableName
 
@@ -1085,6 +1111,95 @@ namespace SqlWork
             return SqlDataAdapter(sqlConnection, strQuery);
         }
 
+        #endregion
+
+        #region messageDone
+        public void messageDone() { MessageBox.Show("Done!"); }
+        #endregion
+
+
+        #region DistinctColumn
+        public List<string> DistinctColumn(string strColumn, string strTable, SqlConnection Connection)
+        {
+            // distinct query
+            string strQueryDistinct = string.Format("SELECT DISTINCT [{0}] FROM [{1}]", strColumn, strTable);
+
+            // distinct column
+            return DataTableToList(SqlDataAdapter(Connection, strQueryDistinct));
+        }
+        #endregion
+
+
+        #region DistinctTable
+        public DataTable DistinctTable(string strTable, SqlConnection Connection)
+        {
+            DataTable dt = new DataTable();
+
+            // all columns
+            List<string> lstAllColumns = SqlColumns(Connection, strTable);
+
+            // distinct all columns
+            int intCountRows = lstAllColumns.Count;
+            for (int i = 0; i < intCountRows; i++)
+            {
+                string strColumn = lstAllColumns[i];
+                dt.Columns.Add(strColumn, typeof(string));
+
+                // distinct column
+                List<string> lst = DistinctColumn(strColumn, strTable, Connection);
+
+                // add to dt
+                for (int j = 0; j < lst.Count; j++)
+                {
+                    DataRow dr = dt.NewRow();
+                    dr[strColumn] = lst[j];
+                    dt.Rows.Add(dr);
+                }
+            }
+
+            return dt;
+        }
+        #endregion
+
+
+        #region DataTableRemoveEmptyCell
+        public DataTable DataTableRemoveEmptyCell(DataTable dt)
+        {
+            // retern dt
+            DataTable dtRetrn = new DataTable();
+
+            // evry column
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                string strColumn = dt.Columns[i].ColumnName;
+
+                // add column to retern dt
+                dtRetrn.Columns.Add(strColumn, typeof(string));
+
+                // rows
+                int k = 0;
+                for (int j = 0; j < dt.Rows.Count; j++)
+                {
+                    string strRow = dt.Rows[j][i].ToString();
+
+                    if (strRow != "")
+                    {
+                        k++;
+                        int intdtRetrnRowsCount = dtRetrn.Rows.Count;
+
+                        if (i == 0 || k > intdtRetrnRowsCount) { DataRow dr = dtRetrn.NewRow(); dr[i] = dt.Rows[j][i]; dtRetrn.Rows.Add(dr); }
+                        else { dtRetrn.Rows[k - 1][i] = dt.Rows[j][i]; }
+                    }
+
+                }
+            }
+
+
+            // i Column
+            // j Row old
+            // k Row new
+            return dtRetrn;
+        }
         #endregion
     }
 }

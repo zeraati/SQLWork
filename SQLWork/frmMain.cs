@@ -16,11 +16,13 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using SQLWork;
 using static System.Environment;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace SqlWork
 {
     public partial class frmMain : Form
     {
+        DataTable dtExport;
         string CopyQuery = "";
         string strPathLoginFolder = @"..\Login.pos";
         List<string> lstAllDataBases;
@@ -52,7 +54,7 @@ namespace SqlWork
 
 
             //*********** defult!!!!!!
-            cmbServer.Text = @"172.20.18.53";
+            cmbServer.Text = @"172.22.77.61";
             btnConnect_Click(null, null);
         }
         #endregion
@@ -153,14 +155,16 @@ namespace SqlWork
         #endregion
 
 
+        #region btnExport_Click
         private void btnExport_Click(object sender, EventArgs e)
         {
             frmExport frmExportData = new frmExport();
             frmExportData.ShowDialog();
         }
+        #endregion
 
 
-        #region cmb change db
+        #region cmbDB_SelectedIndexChanged
         private void cmbDB_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbDB.Text != "System.Data.DataRowView")
@@ -180,7 +184,7 @@ namespace SqlWork
 
 
 
-        #region btn refresh
+        #region btnRefresh_Click
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             string strDatabase = cmbDB.Text;
@@ -190,7 +194,7 @@ namespace SqlWork
         #endregion
 
 
-        #region lstbx change table
+        #region lstbxTable_SelectedIndexChanged
 
         //  change first table
         private void lstbxTable_SelectedIndexChanged(object sender, EventArgs e)
@@ -224,7 +228,7 @@ namespace SqlWork
 
 
 
-        #region select work
+        #region lstbxWorks_SelectedIndexChanged
         private void lstbxWorks_SelectedIndexChanged(object sender, EventArgs e)
         {
             // get work
@@ -276,7 +280,7 @@ namespace SqlWork
 
 
 
-        #region btn run     
+        #region btnRun_Click    
 
         private void btnRun_Click(object sender, EventArgs e)
         {
@@ -285,10 +289,8 @@ namespace SqlWork
             //  get all selected items text from lstbxWorks
             List<string> lstSelectedWorks = functions.GetSelectedItemsText(lstbxWorks);
 
-
             if (lstSelectedWorks.Count > 0)
             {
-
                 //  get all selected items text from lstbxTable
                 List<string> lstSelectedTable = functions.GetSelectedItemsText(lstbxTable);
                 List<string> lstSelectedSeceendTable = functions.GetSelectedItemsText(lstbxSecendTable);
@@ -297,34 +299,35 @@ namespace SqlWork
                 List<string> lstSelectedColumn = functions.GetSelectedItemsText(lstbxColumn);
                 List<string> lstSelectedSecendColumn = functions.GetSelectedItemsText(lstbxSecendColumn);
 
+                string strDataBase = cmbDB.Text;
                 string strWork = lstSelectedWorks[0];
                 string strTable = lstbxTable.GetItemText(lstbxTable.SelectedItem);
                 string strSecendTable = lstbxSecendTable.GetItemText(lstbxSecendTable.SelectedItem);
                 string strColumn = lstbxColumn.GetItemText(lstbxColumn.SelectedItem);
 
-
-
                 DeletTable(strWork, lstSelectedTable);
-
 
                 CheckUniqColumn(strWork, strTable, lstSelectedColumn);
 
-
                 GetUniqData(strWork, sqlCon, strTable, strColumn);
-
 
                 DropColumn(strWork, strTable, lstSelectedColumn);
 
-
                 JoinTwoTable(strWork, strTable, strSecendTable, cmbWork.Text, lstSelectedColumn, lstSelectedSecendColumn);
-
 
                 RenameTable(strWork, strTable, cmbWork.Text);
 
-
                 RenameColumn(strWork, strTable, strColumn, cmbWork.Text);
 
-                ReportDataBase(strWork, cmbDB.Text);
+                ReportDataBase(strWork, strDataBase);
+
+                ReportServer(strWork);
+
+                DistinctTable(strWork,strTable, strDataBase);
+
+                DistinctColumn(strWork, strColumn, strTable, strDataBase);
+
+                dgvResult.DataSource = dtExport;
             }
 
             //  go end in lstbxReport
@@ -616,14 +619,14 @@ namespace SqlWork
             if (Work == "ReportDataBase")
             {
 
-                dtReport.Columns.Add("DataBase", typeof(string));
-                dtReport.Columns.Add("Table", typeof(string));
-                dtReport.Columns.Add("Column", typeof(string));
-                dtReport.Columns.Add("AllRows", typeof(Int32));
-                dtReport.Columns.Add("FillRows", typeof(Int32));
-                dtReport.Columns.Add("NullRows", typeof(Int32));
-                dtReport.Columns.Add("PercentFillRows", typeof(Int32));
-                dtReport.Columns.Add("PercentNullRows", typeof(Int32));
+                dtReport.Columns.Add("پایگاه داده", typeof(string));//0
+                dtReport.Columns.Add("جدول", typeof(string));//1
+                dtReport.Columns.Add("ستون", typeof(string));//2
+                dtReport.Columns.Add("کل", typeof(float));//3
+                dtReport.Columns.Add("رکورد پر", typeof(float));//4
+                dtReport.Columns.Add("رکورد خالی", typeof(float));//5
+                dtReport.Columns.Add("درصد پر", typeof(float));//6
+                dtReport.Columns.Add("درصد خالی", typeof(float));//7
 
                 // change connection for evry databases and  list of all table for evry databases
 
@@ -652,12 +655,12 @@ namespace SqlWork
 
                         // count all recored for table
                         string qAllRows = "SELECT COUNT(*) FROM [" + lstAllTables[j] + "]";
-                        int intAllRows = 0;
+                        float intAllRows = 0;
 
                         dt = functions.SqlDataAdapter(sqlCN, qAllRows);
                         if (dt.Rows.Count > 0)
                         {
-                            if (!Int32.TryParse(dt.Rows[0][0].ToString(), out intAllRows))
+                            if (!float.TryParse(dt.Rows[0][0].ToString(), out intAllRows))
                             { intAllRows = -99999; }
                         }
 
@@ -665,13 +668,13 @@ namespace SqlWork
                         //  count all null rows from table
                         string qNullRows = "SELECT COUNT(*) FROM" +
                         " (SELECT * FROM [" + lstAllTables[j] + "] WHERE [" + lstAllcolumn[k] + "] IS NULL OR RTRIM(LTRIM([" + lstAllcolumn[k] + "])) = '')a";
-                        int intNullRows = 0;
+                        float intNullRows = 0;
 
                         dt = functions.SqlDataAdapter(sqlCN, qNullRows);
 
                         if (dt.Rows.Count > 0)
                         {
-                            if (!Int32.TryParse(dt.Rows[0][0].ToString(), out intNullRows))
+                            if (!float.TryParse(dt.Rows[0][0].ToString(), out intNullRows))
                             { intNullRows = -99999; }
                         }
 
@@ -679,31 +682,72 @@ namespace SqlWork
                         // add new rows
                         DataRow dr = dtReport.NewRow();
 
-                        dr["DataBase"] = strDataBase;
-                        dr["Table"] = lstAllTables[j];
-                        dr["Column"] = lstAllcolumn[k];
-                        dr["AllRows"] = intAllRows;
-                        dr["NullRows"] = intNullRows;
-                        dr["FillRows"] = intAllRows - intNullRows;
-                        if (intAllRows > 0) dr["PercentFillRows"] = (100 * (intAllRows - intNullRows)) / intAllRows;
-                        if (intAllRows > 0) dr["PercentNullRows"] = (100 * intNullRows) / intAllRows;
+                        dr[0] = strDataBase;
+                        dr[1] = lstAllTables[j];
+                        dr[2] = lstAllcolumn[k];
+                        dr[3] = intAllRows;
+                        dr[4] = intNullRows;
+                        dr[5] = intAllRows - intNullRows;
+                        if (intAllRows > 0)
+                        {
+                            float a = (intAllRows - intNullRows) / intAllRows;
+                            float b = intNullRows / intAllRows;
+
+                            dr[6] = (intAllRows - intNullRows) / intAllRows;
+                            dr[7] = intNullRows / intAllRows;
+                        }
 
                         dtReport.Rows.Add(dr);
                     }
-
                 }
 
+                dtExport = dtReport;                
             }
-
-            dgvResult.DataSource = dtReport;
-
-
-
-            dtReport.ExportToExcel(Directory.GetCurrentDirectory() + "\\ReportDataBase_" + strDataBase + ".xlsx");
-
         }
 
         #endregion
+
+
+        #region DistinctColumn
+        public void DistinctColumn(string Work, string strColumn, string strTable, string strDataBase)
+        {
+            DataTable dt;
+
+            if (Work == "DistinctColumn")
+            {
+                functions.SqlConnectionChangeDB(sqlCon, strDataBase);
+               
+                dt = functions.ListToDataTable(functions.DistinctColumn(strColumn, strTable, sqlCon), strColumn);
+
+                dtExport = dt;
+            }
+        }
+        #endregion
+
+
+        #region DistinctTable
+        public void DistinctTable(string Work, string strTable, string strDataBase)
+        {
+            DataTable dt;
+
+            if (Work == "DistinctTable")
+            {
+                functions.SqlConnectionChangeDB(sqlCon, strDataBase);
+
+                dt=functions.DataTableRemoveEmptyCell( functions.DistinctTable(strTable, sqlCon));
+
+                dtExport = dt;
+            }
+        }
+        #endregion
+       
+
+        #region ReportServer
+        public void ReportServer(string Work)
+        {
+        }
+        #endregion
+
 
         #region cmbWorkSource
 
@@ -740,9 +784,43 @@ namespace SqlWork
 
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Enabled = false; Cursor = Cursors.WaitCursor;
+
+         
 
 
+            Enabled = true; Cursor = Cursors.Default;
+        }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+
+            string strSavePatch, strTempePatch;
+            //string strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), strTable + "_Distinct");
+            //string strTempePatch = string.Format("{0}\\tmpReportDistict.xlsx", Directory.GetCurrentDirectory());
+            //dtExport.ExportToExcel(strSavePatch, strTable);
+
+
+            //string strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), strTable + "_Distinct");
+            //string strTempePatch = string.Format("{0}\\tmpReportDistict.xlsx", Directory.GetCurrentDirectory());
+            //dt.ExportToExcel(strSavePatch, strTable);
+
+            
+            strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), "Export");
+            strTempePatch = string.Format("{0}\\tmpDefult.xlsx", Directory.GetCurrentDirectory());
+            dtExport.ExportToExcel(strSavePatch);
+
+            Enabled = true;
+        }
     }
 
 }

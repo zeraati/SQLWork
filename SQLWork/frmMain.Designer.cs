@@ -39,6 +39,7 @@
             this.cmbDB = new System.Windows.Forms.ComboBox();
             this.chbRemember = new System.Windows.Forms.CheckBox();
             this.grbSvrConn = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.lstbxColumn = new System.Windows.Forms.ListBox();
@@ -56,6 +57,8 @@
             this.btnCopy = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnExcel = new System.Windows.Forms.Button();
             this.grbSvrConn.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvResult)).BeginInit();
             this.SuspendLayout();
@@ -150,6 +153,7 @@
             // 
             // grbSvrConn
             // 
+            this.grbSvrConn.Controls.Add(this.button2);
             this.grbSvrConn.Controls.Add(this.cmbServer);
             this.grbSvrConn.Controls.Add(this.btnConnect);
             this.grbSvrConn.Controls.Add(this.txtUser);
@@ -167,6 +171,16 @@
             this.grbSvrConn.TabIndex = 28;
             this.grbSvrConn.TabStop = false;
             this.grbSvrConn.Text = "Server Conn";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(608, -1);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 11;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // label4
             // 
@@ -218,7 +232,7 @@
             this.btnRun.Location = new System.Drawing.Point(416, 395);
             this.btnRun.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(141, 29);
+            this.btnRun.Size = new System.Drawing.Size(87, 29);
             this.btnRun.TabIndex = 7;
             this.btnRun.Text = "اجرا";
             this.btnRun.UseVisualStyleBackColor = true;
@@ -276,7 +290,11 @@
             "JoinTwoTableIntoNewTable",
             "RenameTable",
             "RenameColumn",
-            "ReportDataBase"});
+            "ReportDataBase",
+            "ReportServer",
+            "ReportDataBaseValue",
+            "DistinctColumn",
+            "DistinctTable"});
             this.lstbxWorks.Location = new System.Drawing.Point(416, 80);
             this.lstbxWorks.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.lstbxWorks.Name = "lstbxWorks";
@@ -346,7 +364,7 @@
             // btnCopy
             // 
             this.btnCopy.Enabled = false;
-            this.btnCopy.Location = new System.Drawing.Point(563, 395);
+            this.btnCopy.Location = new System.Drawing.Point(509, 395);
             this.btnCopy.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(45, 29);
@@ -368,20 +386,42 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(316, 88);
+            this.btnExport.Location = new System.Drawing.Point(302, 88);
             this.btnExport.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(49, 27);
+            this.btnExport.Size = new System.Drawing.Size(56, 27);
             this.btnExport.TabIndex = 39;
-            this.btnExport.Text = "اکسپورت";
+            this.btnExport.Text = "اکسل";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(364, 91);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(49, 23);
+            this.button1.TabIndex = 40;
+            this.button1.Text = "Stnd";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnExcel
+            // 
+            this.btnExcel.Location = new System.Drawing.Point(560, 394);
+            this.btnExcel.Name = "btnExcel";
+            this.btnExcel.Size = new System.Drawing.Size(47, 30);
+            this.btnExcel.TabIndex = 41;
+            this.btnExcel.Text = "اکسل";
+            this.btnExcel.UseVisualStyleBackColor = true;
+            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(950, 713);
+            this.Controls.Add(this.btnExcel);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.btnCopy);
             this.Controls.Add(this.checkbxSelectAllTable);
@@ -447,6 +487,9 @@
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnExcel;
     }
 }
 
