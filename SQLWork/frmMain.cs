@@ -183,7 +183,6 @@ namespace SqlWork
         #endregion
 
 
-
         #region btnRefresh_Click
         private void btnRefresh_Click(object sender, EventArgs e)
         {
@@ -227,7 +226,6 @@ namespace SqlWork
         #endregion
 
 
-
         #region lstbxWorks_SelectedIndexChanged
         private void lstbxWorks_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -265,6 +263,16 @@ namespace SqlWork
             #endregion
 
 
+            #region CopyTable
+            if (strWork == "CopyTable")
+            {
+                lstbxWorks.Height = 251;
+
+                cmbWork.DataSource = functions.DataTableToList(functions.SqlGetDBName(sqlCon));
+            }
+            #endregion
+
+
             #region else // defult
 
             else
@@ -277,7 +285,6 @@ namespace SqlWork
 
         }
         #endregion
-
 
 
         #region btnRun_Click    
@@ -323,10 +330,16 @@ namespace SqlWork
 
                 ReportServer(strWork);
 
-                DistinctTable(strWork,strTable, strDataBase);
+                DistinctTable(strWork, strTable, strDataBase);
 
                 DistinctColumn(strWork, strColumn, strTable, strDataBase);
 
+                DistinctServer(strWork, strDataBase);
+
+                DistinctTableSQL(strWork, strTable, strDataBase, lstSelectedColumn);
+
+                CopyTable(strWork, cmbDB.Text,cmbWork.Text, lstSelectedTable);
+            
                 dgvResult.DataSource = dtExport;
             }
 
@@ -701,7 +714,7 @@ namespace SqlWork
                     }
                 }
 
-                dtExport = dtReport;                
+                dtExport = dtReport;
             }
         }
 
@@ -716,7 +729,7 @@ namespace SqlWork
             if (Work == "DistinctColumn")
             {
                 functions.SqlConnectionChangeDB(sqlCon, strDataBase);
-               
+
                 dt = functions.ListToDataTable(functions.DistinctColumn(strColumn, strTable, sqlCon), strColumn);
 
                 dtExport = dt;
@@ -734,17 +747,127 @@ namespace SqlWork
             {
                 functions.SqlConnectionChangeDB(sqlCon, strDataBase);
 
-                dt=functions.DataTableRemoveEmptyCell( functions.DistinctTable(strTable, sqlCon));
+                dt = functions.DataTableRemoveEmptyCell(functions.DistinctTable(strTable, sqlCon));
 
                 dtExport = dt;
             }
         }
         #endregion
-       
+
+
+        #region DistinctTableSQL
+        public void DistinctTableSQL(string Work, string strTable, string strDataBase, List<string> lstColumnsName = null)
+        {
+            if (Work == "DistinctTableSQL")
+            {
+                functions.SqlConnectionChangeDB(sqlCon, strDataBase);
+
+                DataTable dt = functions.DistinctTable(strTable, sqlCon, true, lstColumnsName);
+                string strQuery = dt.Rows[0][0].ToString();
+                functions.SqlExcutCommand(sqlCon, strQuery);
+            }
+        }
+        #endregion
+
+
+        #region DistinctServer
+        private void DistinctServer(string Work, string strDataBase)
+        {
+            if (Work == "DistinctServer")
+            {
+                // change database
+                functions.SqlConnectionChangeDB(sqlCon, strDataBase);
+
+                // tables name
+                List<string> lstTable = functions.SqlTableName(sqlCon);
+
+
+
+                // excel app
+                Excel.Application xlApp = new Excel.Application();
+
+                // workbook
+                string strTempePatch = string.Format("{0}\\tmpDefult.xlsx", Directory.GetCurrentDirectory());
+                Excel.Workbook xlWorkBook = xlApp.Workbooks.Open(strTempePatch, 0, true, 5, "", "", true, Excel.XlPlatform.xlWindows, "\t", false, false, 0, true, 1, 0);
+
+                // sheet
+                Excel.Worksheet xlWorkSheet;
+
+                // create sheets
+                int intlstTableCount = lstTable.Count;
+                for (int d = 1; d < intlstTableCount; d++)
+                {
+                    xlWorkSheet = xlApp.ActiveSheet;
+                    xlWorkSheet.Copy(Type.Missing, xlWorkBook.Sheets[d]);
+                }
+
+
+
+                // fill sheet
+                for (int i = 0; i < intlstTableCount; i++)
+                {
+                    // table name
+                    string strTable = lstTable[i];
+
+                    // distict table
+                    DataTable dt = functions.DataTableRemoveEmptyCell(functions.DistinctTable(strTable, sqlCon));
+
+                    // get sheet
+                    xlWorkSheet = xlWorkBook.Worksheets[i + 1];
+
+                    // set sheet name
+                    xlWorkSheet.Name = strTable;
+
+
+                    //  fill heade with column name
+                    for (var j = 0; j < dt.Columns.Count; j++)
+                        xlWorkSheet.Cells[1, j + 1] = dt.Columns[j].ColumnName;
+
+                    //  fill rows
+                    for (var k = 0; k < dt.Rows.Count; k++)
+                        for (var j = 0; j < dt.Columns.Count; j++)
+                            xlWorkSheet.Cells[k + 2, j + 1] = dt.Rows[k][j];
+
+                    // set columns with
+                    xlWorkSheet.Columns.AutoFit();
+                }
+
+                // save
+                string strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), "Export_strDataBase");
+                xlWorkBook.SaveAs(strSavePatch);
+                xlWorkBook.Close();
+                xlApp.Quit();
+                MessageBox.Show(".فایل اکسل ذخیره شد");
+            }
+        }
+        #endregion
+
 
         #region ReportServer
         public void ReportServer(string Work)
         {
+        }
+        #endregion
+
+
+        #region CopyTable
+        public void CopyTable(string Work, string strDBSource, string strTarget, List<string> lstTable)
+        {
+            if (Work == "CopyTable")
+            {
+                string strOldDB = sqlCon.Database;
+                sqlCon=functions.SqlConnectionChangeDB(sqlCon, strTarget);
+
+                for (int i = 0; i < lstTable.Count; i++)
+                {
+                    string strTable = lstTable[i];
+                   
+                    string strQuery = string.Format("SELECT * INTO [{0}] FROM [{1}].dbo.[{0}]", strTable, strDBSource);
+                    functions.SqlExcutCommand(sqlCon, strQuery);
+                }
+
+                sqlCon=functions.SqlConnectionChangeDB(sqlCon, strOldDB);
+            }
         }
         #endregion
 
@@ -788,7 +911,7 @@ namespace SqlWork
         {
             Enabled = false; Cursor = Cursors.WaitCursor;
 
-         
+
 
 
             Enabled = true; Cursor = Cursors.Default;
@@ -805,19 +928,10 @@ namespace SqlWork
             Enabled = false;
 
             string strSavePatch, strTempePatch;
-            //string strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), strTable + "_Distinct");
-            //string strTempePatch = string.Format("{0}\\tmpReportDistict.xlsx", Directory.GetCurrentDirectory());
-            //dtExport.ExportToExcel(strSavePatch, strTable);
 
-
-            //string strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), strTable + "_Distinct");
-            //string strTempePatch = string.Format("{0}\\tmpReportDistict.xlsx", Directory.GetCurrentDirectory());
-            //dt.ExportToExcel(strSavePatch, strTable);
-
-            
             strSavePatch = string.Format("{0}\\{1}.xlsx", Directory.GetCurrentDirectory(), "Export");
             strTempePatch = string.Format("{0}\\tmpDefult.xlsx", Directory.GetCurrentDirectory());
-            dtExport.ExportToExcel(strSavePatch);
+            dtExport.ExportToExcel(strSavePatch, "Export", true, strTempePatch);
 
             Enabled = true;
         }

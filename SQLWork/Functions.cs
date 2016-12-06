@@ -379,7 +379,7 @@ namespace SqlWork
 
 
         #region ListToDataTable
-        public DataTable ListToDataTable(List<string> lst, string strColumnName=null)
+        public DataTable ListToDataTable(List<string> lst, string strColumnName = null)
         {
             if (strColumnName == "") { strColumnName = "ColumnName"; }
             DataTable dt = new DataTable();
@@ -387,7 +387,7 @@ namespace SqlWork
 
             DataRow dr = null;
             for (int i = 0; i < lst.Count; i++)
-            { dr = dt.NewRow(); dr[0] = lst[i];dt.Rows.Add(dr); }
+            { dr = dt.NewRow(); dr[0] = lst[i]; dt.Rows.Add(dr); }
 
             return dt;
         }
@@ -817,6 +817,7 @@ namespace SqlWork
         {
             string qry = "SELECT name FROM sys.databases WHERE database_id>0 order by name";
             DataTable dt = SqlDataAdapter(sqlConnection, qry);
+
             return dt;
         }
 
@@ -1131,31 +1132,97 @@ namespace SqlWork
 
 
         #region DistinctTable
-        public DataTable DistinctTable(string strTable, SqlConnection Connection)
+        public DataTable DistinctTable(string strTable, SqlConnection Connection, bool bolSql = false, List<string> lstColumnsName = null)
         {
             DataTable dt = new DataTable();
 
             // all columns
-            List<string> lstAllColumns = SqlColumns(Connection, strTable);
+            List<string> lstColumns;
+            if (lstColumnsName != null)
+            { lstColumns = lstColumnsName; }
 
-            // distinct all columns
-            int intCountRows = lstAllColumns.Count;
-            for (int i = 0; i < intCountRows; i++)
+            else { lstColumns = SqlColumns(Connection, strTable); }
+
+            lstColumns.Remove("StudentID");
+
+            if (bolSql == false)
             {
-                string strColumn = lstAllColumns[i];
-                dt.Columns.Add(strColumn, typeof(string));
-
-                // distinct column
-                List<string> lst = DistinctColumn(strColumn, strTable, Connection);
-
-                // add to dt
-                for (int j = 0; j < lst.Count; j++)
+                // distinct all columns
+                int intCountRows = lstColumns.Count;
+                for (int i = 0; i < intCountRows; i++)
                 {
-                    DataRow dr = dt.NewRow();
-                    dr[strColumn] = lst[j];
-                    dt.Rows.Add(dr);
+                    string strColumn = lstColumns[i];
+                    dt.Columns.Add(strColumn, typeof(string));
+
+                    // distinct column
+                    List<string> lst = DistinctColumn(strColumn, strTable, Connection);
+
+                    // add to dt
+                    for (int j = 0; j < lst.Count; j++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        dr[strColumn] = lst[j];
+                        dt.Rows.Add(dr);
+                    }
                 }
             }
+
+
+            
+            if (bolSql == true)
+            {
+                // column name with beracet
+                for (int i = 0; i < lstColumns.Count; i++)
+                { lstColumns[i] = string.Format("[{0}]", lstColumns[i]); }
+
+
+                List<int> lst = new List<int>();
+                for (int i = 0; i < lstColumns.Count; i++)
+                {
+                    string strQueryDistinct = string.Format("SELECT COUNT(*) [COUNT] FROM (SELECT DISTINCT {0} FROM [{1}])a", lstColumns[i], strTable);
+                    string strRowsDountDistinct = SqlGetOneRow(Connection, strQueryDistinct);
+
+                    int intValue = 0;
+                    Int32.TryParse(strRowsDountDistinct, out intValue);
+
+                    lst.Add(intValue);
+                }
+
+                lst.Sort();
+                lst.Reverse();
+
+                // Column With Seprator
+                string strColumnWithSep = string.Empty;
+                for (int i = 0; i < lstColumns.Count; i++)
+                {
+                    if (i == 0)
+                    { strColumnWithSep = lstColumns[i]; }
+
+                    if (i > 0)
+                    { strColumnWithSep += "," + lstColumns[i]; }
+                }
+
+                string strQuery = string.Format("IF OBJECT_ID('{1}_Distict', 'U') IS NOT NULL BEGIN DROP TABLE [{1}_Distict] END \r\nSELECT {0} INTO [{1}_Distict] FROM \r\n", strColumnWithSep, strTable);
+
+                strTable = string.Format("[{0}]", strTable);
+
+                for (int i = 0; i < lstColumns.Count; i++)
+                {
+                    string strColumn = lstColumns[i];
+
+                    if (i == 0)
+                    { strQuery += string.Format("     (SELECT {0},ROW_NUMBER()OVER(ORDER BY {0})ID FROM {1} GROUP BY {0})t00 \r\n", strColumn, strTable); }
+
+                    else
+                    {
+                        strQuery += string.Format("     FULL JOIN (SELECT {0},ROW_NUMBER()OVER(ORDER BY {0})ID FROM {1} GROUP BY {0})t0{2} ON t0{2}.ID = t00.ID \r\n", strColumn, strTable, i);
+                    }
+                }
+
+                dt.Columns.Add("ColumnName", typeof(string));
+                dt.Rows.Add(strQuery);
+            }
+
 
             return dt;
         }

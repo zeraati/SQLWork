@@ -245,7 +245,7 @@
             this.lstbxReport.ItemHeight = 19;
             this.lstbxReport.Items.AddRange(new object[] {
             "********************    Report    **********************",
-            "============================================"});
+            "======================================="});
             this.lstbxReport.Location = new System.Drawing.Point(614, 78);
             this.lstbxReport.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.lstbxReport.Name = "lstbxReport";
@@ -294,8 +294,11 @@
             "ReportServer",
             "ReportDataBaseValue",
             "DistinctColumn",
-            "DistinctTable"});
-            this.lstbxWorks.Location = new System.Drawing.Point(416, 80);
+            "DistinctTable",
+            "DistinctServer",
+            "DistinctTableSQL",
+            "CopyTable"});
+            this.lstbxWorks.Location = new System.Drawing.Point(415, 80);
             this.lstbxWorks.Margin = new System.Windows.Forms.Padding(3, 5, 3, 5);
             this.lstbxWorks.Name = "lstbxWorks";
             this.lstbxWorks.RightToLeft = System.Windows.Forms.RightToLeft.No;
